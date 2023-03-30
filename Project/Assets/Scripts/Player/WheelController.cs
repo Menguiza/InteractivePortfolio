@@ -24,6 +24,8 @@ public class WheelController : MonoBehaviour
     private Rigidbody rb;
     private float currentAcceleration, currentBrakeforce, currentTurnAngle, horizontalInput, verticalInput;
 
+    private bool movementDisabled;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -64,8 +66,16 @@ public class WheelController : MonoBehaviour
 
     void InputDetection()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        if (!movementDisabled)
+        {
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            horizontalInput = 0;
+            verticalInput = 0;
+        }
     }
     
     void Move()
@@ -134,5 +144,15 @@ public class WheelController : MonoBehaviour
         col.GetWorldPose(out position, out rotation);
         
         mesh.rotation = rotation;
+    }
+
+    public void DisableMovement()
+    {
+        movementDisabled = true;
+    }
+    
+    public void EnableMovement()
+    {
+        movementDisabled = false;
     }
 }

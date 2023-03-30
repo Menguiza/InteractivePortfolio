@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace BrokenVector.LowPolyFencePack
 {
@@ -9,12 +10,15 @@ namespace BrokenVector.LowPolyFencePack
 
         [SerializeField] private DoorController doorController;
 
+        public UnityEvent Entering;
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
                 doorController.ToggleDoor();
                 col.SetActive(false);
+                Entering.Invoke();
             }
         }
         
