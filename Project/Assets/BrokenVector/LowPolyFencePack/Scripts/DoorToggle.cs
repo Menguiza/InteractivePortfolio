@@ -1,13 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace BrokenVector.LowPolyFencePack
 {
     public class DoorToggle : MonoBehaviour
     {
-        [SerializeField] private GameObject col; 
-
+        [SerializeField] private GameObject col;
         [SerializeField] private DoorController doorController;
 
         public UnityEvent Entering;

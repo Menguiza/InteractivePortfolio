@@ -1,19 +1,23 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 using Cinemachine;
-using UnityEngine.Serialization;
 
-public enum PlayerState
-{
-    ThirdPerson, Isometric
-}
+/// <summary>
+/// This class manages car movement and it's camera config.
+/// It requires a rigidbody, and certain references defined on "Assignable parameters".
+/// </summary>
 
 [RequireComponent(typeof(Rigidbody))]
 public class WheelController : MonoBehaviour
 {
+    /// <summary>
+    /// Player cam state: ThirdPerson or Isometric
+    /// </summary>
+    public enum PlayerState
+    {
+        ThirdPerson, Isometric
+    }
+    
+    //Assignable parameters
     [SerializeField] private PlayerState state;
     [SerializeField] private CinemachineFreeLook freeLook;
     [SerializeField] private CinemachineVirtualCamera isometric;
@@ -21,37 +25,45 @@ public class WheelController : MonoBehaviour
     [SerializeField] private Transform FRTrans, FLTrans, BRTrans, BLTrans, centerOfMass, steeringWheel;
     [SerializeField] private float acceleration = 500f, brakingForce = 300f, maxTurnAngle = 25f;
 
+    
+    //Utility parameters
     private Rigidbody rb;
     private float currentAcceleration, currentBrakeforce, currentTurnAngle, horizontalInput, verticalInput;
-
     private bool movementDisabled;
 
     private void Awake()
     {
+        //Rigidbody reference (before class context the Rigidbody component was required)
         rb = GetComponent<Rigidbody>();
+        
+        //Setting up cursor
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         
+        //Determine which cam to use depending on state variable
         if(state == PlayerState.ThirdPerson) isometric.gameObject.SetActive(false);
         if(state == PlayerState.Isometric) freeLook.gameObject.SetActive(false);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
+        //Setting up center of mass to desired point
         rb.centerOfMass = centerOfMass.localPosition;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        //Player input detection
         InputDetection();
         
+        //Apply brake force
         Braking();
         
+        //Recenter cam 
         CameraRecentering();
         
+        //Sync wheels meshes with wheels colliders
         MoveWheelMesh(FR, FRTrans);
         MoveWheelMesh(FL, FLTrans);
         MoveWheelMesh(BR, BRTrans);
@@ -60,10 +72,20 @@ public class WheelController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Turns wheels colliders and meshes
         Turn();
+        
+        //Apply force to player 
         Move();
     }
 
+    #region MovementRelated
+
+    /// <summary>
+    /// Determined by a bool type variable, it checks for player inputs.
+    /// Assign axis raw values to local variables ("horizontalInput" and "verticalInput")
+    /// if bool "movementDisabled" is set to false or set them to zero if it is set to true.
+    /// </summary>
     void InputDetection()
     {
         if (!movementDisabled)
@@ -78,6 +100,13 @@ public class WheelController : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Calculates currentAcceleration with the assignable variable "acceleration" multiplied
+    /// by "verticalInput" (variable determined by "InputDetection" method).
+    /// Using currentAcceleration result it applies motorTorque to the four wheels colliders.
+    /// NOTE: currentAcceleration applied to front wheels is divided by 2.
+    /// Finally, it applies currentBrakeForce (variable determined by "Braking" method) to four wheels. 
+    /// </summary>
     void Move()
     {
         currentAcceleration = acceleration * verticalInput;
@@ -93,7 +122,13 @@ public class WheelController : MonoBehaviour
         BR.brakeTorque = currentBrakeforce;
         BL.brakeTorque = currentBrakeforce;
     }
-
+    
+    /// <summary>
+    /// Determines currentTurnAngle with maxTurnAngle (variable assigned by: user, defined at: "Assingnable Parameters" section)
+    /// multiplied by horizontalInput (variable determined by "InputDetection" method).
+    /// Then applies currentTurnAngle to steeringWheel (reference needed! defined at: "Assingnable Parameters" section)
+    /// and front wheels colliders.
+    /// </summary>
     void Turn()
     {
         currentTurnAngle = maxTurnAngle * horizontalInput;
@@ -104,6 +139,11 @@ public class WheelController : MonoBehaviour
         FL.steerAngle = currentTurnAngle;
     }
 
+    /// <summary>
+    /// Determines currentBrakeForce depending on verticalInput's value (variable determined by "InputDetection" method).
+    /// If verticalInput is == 0 currentBrakeForce will be brakingForce (variable assigned by: user, defined at: "Assingnable Parameters" section).
+    /// If VerticalInput is != 0 currentBrakeForce will be 0.
+    /// </summary>
     void Braking()
     {
         if (verticalInput == 0)
@@ -116,6 +156,15 @@ public class WheelController : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region CameraRelated
+    
+    /// <summary>
+    /// Controls CineMachineFreeLook recentering behavior depending on freeLook GameObject activeSelf (true)
+    /// to execute and verticalInput value to determine whether if it is != 0 or 0.
+    /// Also, internally it checks if verticalInput's value is == 1 (forward) or == -1 (backward) to determine Heading Bias value.
+    /// </summary>
     void CameraRecentering()
     {
         if (freeLook.gameObject.activeSelf)
@@ -135,7 +184,16 @@ public class WheelController : MonoBehaviour
             }
         }
     }
-    
+
+    #endregion
+
+    #region Utility
+
+    /// <summary>
+    /// Applies WheelCollider's rotation to a Transform.
+    /// </summary>
+    /// <param name="col"> Defined as the WheelCollider used as the reference rotation. </param>
+    /// <param name="mesh"> Defined as the Transform that will receive a new rotation </param>
     void MoveWheelMesh(WheelCollider col, Transform mesh)
     {
         Vector3 position;
@@ -146,13 +204,21 @@ public class WheelController : MonoBehaviour
         mesh.rotation = rotation;
     }
 
+    /// <summary>
+    /// Sets moventDisabled variable to true.
+    /// </summary>
     public void DisableMovement()
     {
         movementDisabled = true;
     }
     
+    /// <summary>
+    /// Sets moventDisabled variable to false.
+    /// </summary>
     public void EnableMovement()
     {
         movementDisabled = false;
     }
+
+    #endregion
 }
