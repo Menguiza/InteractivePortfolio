@@ -37,10 +37,9 @@ public class WheelController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         
         //Setting up cursor
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-        
+
         //Determine which cam to use depending on state variable
         if(state == PlayerState.ThirdPerson) isometric.gameObject.SetActive(false);
         if(state == PlayerState.Isometric) freeLook.gameObject.SetActive(false);
