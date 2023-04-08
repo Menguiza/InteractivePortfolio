@@ -208,6 +208,7 @@ public class WheelController : MonoBehaviour
     /// </summary>
     public void DisableMovement()
     {
+        rb.isKinematic = true;
         movementDisabled = true;
     }
     
@@ -216,6 +217,7 @@ public class WheelController : MonoBehaviour
     /// </summary>
     public void EnableMovement()
     {
+        rb.isKinematic = false;
         movementDisabled = false;
     }
 
