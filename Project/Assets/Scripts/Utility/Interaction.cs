@@ -1,19 +1,26 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Interaction : MonoBehaviour
 {
-    [SerializeField] private Animator anim;
-    [SerializeField] private CanvasGroup cnv;
+    public UnityEvent Interacted, Enter, Leave;
 
-    public UnityEvent Interacted;
+    private bool canInteract;
+    
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && canInteract)
+        {
+            Interacted.Invoke();
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            anim.SetTrigger("Alpha");
-            cnv.alpha = 1;
+            Enter.Invoke();
         }
     }
 
@@ -21,10 +28,7 @@ public class Interaction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                Interacted.Invoke();
-            }
+            canInteract = true;
         }
     }
     
@@ -32,8 +36,8 @@ public class Interaction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            anim.SetTrigger("NoAlpha");
-            cnv.alpha = 0;
+            canInteract = false;
+            Leave.Invoke();
         }
     }
 }

@@ -37,6 +37,8 @@ public class ResetBowling : MonoBehaviour
             element.position = initialPos[index];
             element.rotation = initialRot[index];
             rb[index].velocity = Vector3.zero;
+            rb[index].isKinematic = true;
+            rb[index].isKinematic = false;
             index++;
         }
     }
