@@ -38,7 +38,7 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     void ChangeSceneDelayed()
     {
-        SceneManager.LoadScene(targetSceneIndex);
+        SceneManager.LoadSceneAsync(targetSceneIndex);
     }
 
     #endregion
