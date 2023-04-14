@@ -25,11 +25,15 @@ public class WheelController : MonoBehaviour
     [SerializeField] private Transform FRTrans, FLTrans, BRTrans, BLTrans, centerOfMass, steeringWheel;
     [SerializeField] private float acceleration = 500f, brakingForce = 300f, maxTurnAngle = 25f;
 
+    [Header("Audio")] 
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip brake;
+
     
     //Utility parameters
     private Rigidbody rb;
     private float currentAcceleration, currentBrakeforce, currentTurnAngle, horizontalInput, verticalInput;
-    private bool movementDisabled;
+    private bool movementDisabled, canBrakeSound;
 
     private void Awake()
     {
@@ -148,9 +152,15 @@ public class WheelController : MonoBehaviour
         if (verticalInput == 0)
         {
             currentBrakeforce = brakingForce;
+            if (canBrakeSound)
+            {
+                canBrakeSound = false;
+                _audioSource.PlayOneShot(brake);
+            }
         }
         else
         {
+            canBrakeSound = true;
             currentBrakeforce = 0;
         }
     }

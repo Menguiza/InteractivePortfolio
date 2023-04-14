@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -38,7 +39,22 @@ public class SceneChange : MonoBehaviour
     /// </summary>
     void ChangeSceneDelayed()
     {
-        SceneManager.LoadSceneAsync(targetSceneIndex);
+        StartCoroutine(LoadAsyncScene());
+    }
+
+    #endregion
+
+    #region Coroutines
+
+    IEnumerator LoadAsyncScene()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(targetSceneIndex);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
     }
 
     #endregion
