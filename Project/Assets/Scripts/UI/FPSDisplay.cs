@@ -1,19 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-public class FPSDisplay : MonoBehaviour
+namespace UI
 {
-    public TMP_Text display_Text;
-    
-    private int avgFrameRate;
- 
-    public void Update ()
+#if UNITY_EDITOR || DEBUG
+    public class FPSDisplay : MonoBehaviour
     {
-        float current = 0;
-        current = (int)(1f / Time.unscaledDeltaTime);
-        avgFrameRate = (int)current;
-        display_Text.text = avgFrameRate.ToString() + " FPS";
+        public TMP_Text display_Text;
+    
+        private int avgFrameRate;
+ 
+        public void Update ()
+        {
+            float current = 0;
+            current = (int)(1f / Time.unscaledDeltaTime);
+            avgFrameRate = (int)current;
+            display_Text.text = avgFrameRate.ToString() + " FPS";
+        }
     }
+#endif
 }
