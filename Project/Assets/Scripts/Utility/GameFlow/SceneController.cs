@@ -7,18 +7,13 @@ namespace Utility.GameFlow
     public class SceneController : MonoBehaviour
     {
         public delegate void SceneLoad();
-
         public static event SceneLoad OnLoadingScene;
         public static event SceneLoad OnNextSceneLoaded;
         public static event SceneLoad OnLastSceneUnloaded;
         
         [Header("Parameters")]
         [SerializeField] private LoadSceneMode defaultSceneLoadMode = LoadSceneMode.Additive;
-#if UNITY_EDITOR
-        [Header("Testing")] 
-        [SerializeField] private byte sceneToLoad;
-        [Space]
-#endif
+        
         private byte _currentSceneIndex;
         
         private void Awake()
@@ -49,12 +44,18 @@ namespace Utility.GameFlow
         {
             if(targetSceneIndex == 0) return;
             
+            OnLoadingScene?.Invoke();
+            
             AsyncOperation asyncSceneLoad = SceneManager.LoadSceneAsync(targetSceneIndex, loadMode);
 
             while (!asyncSceneLoad.isDone)
             {
                 await Task.Yield();
             }
+
+            await Task.Delay(1000);
+
+            SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(targetSceneIndex));
 
             _currentSceneIndex = targetSceneIndex;
             

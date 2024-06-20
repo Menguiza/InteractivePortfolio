@@ -1,24 +1,26 @@
-using UnityEngine;
-using Utility.GameFlow;
+using UI.MVC.Bases;
+using UnityEngine.Device;
 
-public class MenuController : MonoBehaviour
+namespace UI.MVC
 {
-    [SerializeField] private MenuView menuView;
-
-    private void Awake()
+    public class MenuController : BaseController
     {
-        Initialize();
-    }
+        private readonly MenuUIModel _menuUIModel;
+        
+        public MenuController(UIModel uiModel, BaseView view) : base(view)
+        {
+            _menuUIModel = (MenuUIModel)uiModel;
+        }
 
-    public void Initialize()
-    {
-        if (menuView == null) return;
-
-        menuView.PlayButton?.onClick.AddListener(CallForEndState);
-    }
-
-    private void CallForEndState()
-    {
-        GameManager.OnMoveOn?.Invoke();
+        public override void Initialize()
+        {
+            base.Initialize();
+            
+            ((MenuView)MyView).PlayButton.onClick.AddListener(CallForEndState);
+            
+            ((MenuView)MyView).LinkedInButton.onClick.AddListener(() => Application.OpenURL(_menuUIModel.LinkedInURL));
+            ((MenuView)MyView).GithubButton.onClick.AddListener(() => Application.OpenURL(_menuUIModel.GitHubURL));
+            ((MenuView)MyView).MailButton.onClick.AddListener(() => Application.OpenURL(_menuUIModel.MailURl));
+        }
     }
 }

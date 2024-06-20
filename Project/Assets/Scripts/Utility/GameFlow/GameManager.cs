@@ -32,6 +32,8 @@ namespace Utility.GameFlow
         private void Start()
         {
             ChangeState(GameStates.Menu);
+            
+            AudioManager.PlayClip(AudioManager.GetClipData("Theme"));
         }
 
         private void ChangeState(GameStates newState)
@@ -39,6 +41,7 @@ namespace Utility.GameFlow
             if(CurrentState == newState) return;
             
             CurrentState = newState;
+            
             OnStateChanged?.Invoke(CurrentState);
         }
 
