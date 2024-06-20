@@ -23,7 +23,7 @@ namespace Utility.GameFlow
         
         private void Awake()
         {
-            GameManager.OnStateChange += SceneChange;
+            GameManager.OnStateChanged += SceneChange;
         }
 
         private void SceneChange(GameStates state)
