@@ -1623,8 +1623,8 @@ RectTransform:
   m_Father: {fileID: 1464810821}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 190.62, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
@@ -3423,6 +3423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsView: {fileID: 1024160494}
+  settingsKey: 27
 --- !u!1 &644293141
 GameObject:
   m_ObjectHideFlags: 0
@@ -4652,6 +4653,9 @@ GameObject:
   - component: {fileID: 996593284}
   - component: {fileID: 996593283}
   - component: {fileID: 996593282}
+  - component: {fileID: 996593287}
+  - component: {fileID: 996593286}
+  - component: {fileID: 996593285}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -4780,6 +4784,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 996593280}
   m_CullTransparentMesh: 1
+--- !u!114 &996593285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996593280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 337471c45f4678a4793baa257c351af1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioCode: ButtonHover
+  customAudioSource: {fileID: 0}
+--- !u!114 &996593286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996593280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 337471c45f4678a4793baa257c351af1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioCode: ButtonClick
+  customAudioSource: {fileID: 0}
+--- !u!114 &996593287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996593280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 996593286}
+          m_TargetAssemblyTypeName: Utility.Audio.SoundCaster, Assembly-CSharp
+          m_MethodName: CastSingle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 996593285}
+          m_TargetAssemblyTypeName: Utility.Audio.SoundCaster, Assembly-CSharp
+          m_MethodName: CastSingle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1024160491
 GameObject:
   m_ObjectHideFlags: 0
@@ -6615,6 +6692,9 @@ GameObject:
   - component: {fileID: 2018910380}
   - component: {fileID: 2018910379}
   - component: {fileID: 2018910378}
+  - component: {fileID: 2018910383}
+  - component: {fileID: 2018910382}
+  - component: {fileID: 2018910381}
   - component: {fileID: 2018910377}
   m_Layer: 5
   m_Name: Close_Button
@@ -6713,7 +6793,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2018910379}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2018910382}
+        m_TargetAssemblyTypeName: Utility.Audio.SoundCaster, Assembly-CSharp
+        m_MethodName: CastSingle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2018910379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6752,6 +6844,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018910375}
   m_CullTransparentMesh: 1
+--- !u!114 &2018910381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018910375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 337471c45f4678a4793baa257c351af1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioCode: ButtonHover
+  customAudioSource: {fileID: 0}
+--- !u!114 &2018910382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018910375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 337471c45f4678a4793baa257c351af1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioCode: ButtonClick
+  customAudioSource: {fileID: 0}
+--- !u!114 &2018910383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018910375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2018910381}
+          m_TargetAssemblyTypeName: Utility.Audio.SoundCaster, Assembly-CSharp
+          m_MethodName: CastSingle
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2022824582
 GameObject:
   m_ObjectHideFlags: 0

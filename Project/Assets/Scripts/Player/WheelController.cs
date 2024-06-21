@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cinemachine;
+using Utility.GameFlow;
 
 /// <summary>
 /// This class manages car movement and it's camera config.
@@ -47,6 +48,25 @@ public class WheelController : MonoBehaviour
         //Determine which cam to use depending on state variable
         if(state == PlayerState.ThirdPerson) isometric.gameObject.SetActive(false);
         if(state == PlayerState.Isometric) freeLook.gameObject.SetActive(false);
+
+        GameManager.Pause += paused =>
+        {
+            Cursor.lockState = paused ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = paused;
+
+            if (paused)
+            {
+                if(freeLook.gameObject.activeSelf) freeLook.enabled = false;
+
+                DisableMovement();
+            }
+            else
+            {
+                if (freeLook.gameObject.activeSelf) freeLook.enabled = true;
+
+                EnableMovement();
+            }
+        };
     }
 
     void Start()

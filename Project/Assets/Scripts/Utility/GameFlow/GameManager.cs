@@ -16,6 +16,8 @@ namespace Utility.GameFlow
         public static Action OnMoveOn;
         public static Action OnBackUp;
 
+        public static Action<bool> Pause;
+
         public delegate void StateChange(GameStates newState);
         public static event StateChange OnStateChanged;
         
