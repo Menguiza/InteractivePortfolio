@@ -8,9 +8,12 @@ namespace UI.MVC
         [Header("View")] 
         [SerializeField] private LoadingView loadingView;
 
+        [Header("Camera")]
+        [SerializeField] private Camera loadingCamera;
+
         private void Awake()
         {
-            Controller = new LoadingController(loadingView);
+            Controller = new LoadingController(loadingView, loadingCamera);
         }
 
         protected override void BindModel()

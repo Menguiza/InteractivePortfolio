@@ -23,7 +23,8 @@ namespace UI.MVC
             
             if(pointerClickEntry != null) pointerClickEntry.callback.AddListener(OnPanelClicked);
             
-            ((SettingsView)MyView).CloseButton.onClick.AddListener(() => UIManager.ToggleModel(ModelType.Settings, false));
+            ((SettingsView)MyView).CloseWindowButton.onClick.AddListener(() => UIManager.ToggleModel(ModelType.Settings, false));
+            ((SettingsView)MyView).CloseWindowButton.onClick.AddListener(() => Application.Quit());
 
             ((SettingsView)MyView).MasterVolumeSlider.onValueChanged.AddListener(value => OnChangeVolume("MasterVolume", value));
             ((SettingsView)MyView).MusicVolumeSlider.onValueChanged.AddListener(value => OnChangeVolume("MusicVolume", value));

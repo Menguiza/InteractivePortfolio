@@ -1,24 +1,25 @@
 using UnityEngine;
 using Cinemachine;
 using Utility.GameFlow;
+using Unity.VisualScripting.Antlr3.Runtime;
+
+/// <summary>
+/// Player cam state: ThirdPerson or Isometric
+/// </summary>
+public enum PlayerState
+{
+    ThirdPerson, Isometric
+}
 
 /// <summary>
 /// This class manages car movement and it's camera config.
 /// It requires a rigidbody, and certain references defined on "Assignable parameters".
 /// </summary>
-
 [RequireComponent(typeof(Rigidbody))]
 public class WheelController : MonoBehaviour
 {
-    /// <summary>
-    /// Player cam state: ThirdPerson or Isometric
-    /// </summary>
-    public enum PlayerState
-    {
-        ThirdPerson, Isometric
-    }
-    
     //Assignable parameters
+    [Header("Parameters")]
     [SerializeField] private PlayerState state;
     [SerializeField] private CinemachineFreeLook freeLook;
     [SerializeField] private CinemachineVirtualCamera isometric;
@@ -29,12 +30,13 @@ public class WheelController : MonoBehaviour
     [Header("Audio")] 
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip brake;
+    [SerializeField][Range(0f, 10f)] private float velocityForBreakSound = 5f;
 
     
     //Utility parameters
     private Rigidbody rb;
     private float currentAcceleration, currentBrakeforce, currentTurnAngle, horizontalInput, verticalInput;
-    private bool movementDisabled, canBrakeSound;
+    private bool movementDisabled, canBrakeSound, breakAlreadyCalled;
 
     private void Awake()
     {
@@ -49,24 +51,7 @@ public class WheelController : MonoBehaviour
         if(state == PlayerState.ThirdPerson) isometric.gameObject.SetActive(false);
         if(state == PlayerState.Isometric) freeLook.gameObject.SetActive(false);
 
-        GameManager.Pause += paused =>
-        {
-            Cursor.lockState = paused ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = paused;
-
-            if (paused)
-            {
-                if(freeLook.gameObject.activeSelf) freeLook.enabled = false;
-
-                DisableMovement();
-            }
-            else
-            {
-                if (freeLook.gameObject.activeSelf) freeLook.enabled = true;
-
-                EnableMovement();
-            }
-        };
+        GameManager.Pause += GamePuseControl;
     }
 
     void Start()
@@ -100,6 +85,11 @@ public class WheelController : MonoBehaviour
         
         //Apply force to player 
         Move();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Pause -= GamePuseControl;
     }
 
     #region MovementRelated
@@ -172,6 +162,13 @@ public class WheelController : MonoBehaviour
         if (verticalInput == 0)
         {
             currentBrakeforce = brakingForce;
+
+            if ((rb.velocity.x > velocityForBreakSound || rb.velocity.x < -velocityForBreakSound) && !breakAlreadyCalled)
+            {
+                breakAlreadyCalled = true;
+                canBrakeSound = true;
+            }
+
             if (canBrakeSound)
             {
                 canBrakeSound = false;
@@ -180,7 +177,8 @@ public class WheelController : MonoBehaviour
         }
         else
         {
-            canBrakeSound = true;
+            breakAlreadyCalled = false;
+            canBrakeSound = false;
             currentBrakeforce = 0;
         }
     }
@@ -247,8 +245,29 @@ public class WheelController : MonoBehaviour
     /// </summary>
     public void EnableMovement()
     {
+        if (Cursor.visible) return;
+
         rb.isKinematic = false;
         movementDisabled = false;
+    }
+
+    private void GamePuseControl(bool paused)
+    {
+        Cursor.lockState = paused ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = paused;
+
+        if (paused)
+        {
+            if (freeLook.gameObject.activeSelf && state == PlayerState.ThirdPerson) freeLook.enabled = false;
+
+            DisableMovement();
+        }
+        else
+        {
+            if (freeLook.gameObject.activeSelf && state == PlayerState.ThirdPerson) freeLook.enabled = true;
+
+            EnableMovement();
+        }
     }
 
     #endregion

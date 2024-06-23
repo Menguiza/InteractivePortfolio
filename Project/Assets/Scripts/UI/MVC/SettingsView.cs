@@ -12,7 +12,8 @@ namespace UI.MVC
         [SerializeField] private CanvasGroup targetCanvasGroup;
 
         [Header("Buttons")] 
-        [SerializeField] private Button closeButton;
+        [SerializeField] private Button closeWindowButton;
+        [SerializeField] private Button closeGameButton;
         
         [Header("Sliders")] 
         [SerializeField] private Slider masterVolumeSlider;
@@ -29,7 +30,8 @@ namespace UI.MVC
         [Header("Feedbacks")] 
         [SerializeField] private Animator panelAnimator;
 
-        public Button CloseButton => closeButton;
+        public Button CloseWindowButton => closeWindowButton;
+        public Button CloseGameButton => closeWindowButton;
         
         public Slider MasterVolumeSlider => masterVolumeSlider;
         public Slider MusicVolumeSlider => musicVolumeSlider;
@@ -45,7 +47,8 @@ namespace UI.MVC
         {
             mainCanvasGroup = targetCanvasGroup;
             
-            CloseButton.onClick.RemoveAllListeners();
+            CloseWindowButton.onClick.RemoveAllListeners();
+            CloseGameButton.onClick.RemoveAllListeners();
             
             MasterVolumeSlider.onValueChanged.RemoveAllListeners();
             MusicVolumeSlider.onValueChanged.RemoveAllListeners();

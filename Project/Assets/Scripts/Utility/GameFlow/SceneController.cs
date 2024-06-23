@@ -21,26 +21,31 @@ namespace Utility.GameFlow
             GameManager.OnStateChanged += SceneChange;
         }
 
-        private void SceneChange(GameStates state)
+        private async void SceneChange(GameStates state)
         {
+            sbyte targetIndex = -1;
+
             switch (state)
             {
                 case GameStates.Menu:
-                    UnloadScene(_currentSceneIndex);
-                    LoadScene(1, defaultSceneLoadMode);
+                    targetIndex = 1;
                     break;
                 case GameStates.Entrance:
-                    UnloadScene(_currentSceneIndex);
-                    LoadScene(2, defaultSceneLoadMode);
+                    targetIndex = 2;
                     break;
                 case GameStates.Map:
-                    UnloadScene(_currentSceneIndex);
-                    LoadScene(3, defaultSceneLoadMode);
+                    targetIndex = 3;
                     break;
+            }
+
+            if(targetIndex != -1)
+            {
+                await UnloadScene(_currentSceneIndex);
+                await LoadScene((byte)targetIndex, defaultSceneLoadMode);
             }
         }
 
-        private async void LoadScene(byte targetSceneIndex, LoadSceneMode loadMode = LoadSceneMode.Single)
+        private async Task LoadScene(byte targetSceneIndex, LoadSceneMode loadMode = LoadSceneMode.Single)
         {
             if(targetSceneIndex == 0) return;
             
@@ -53,16 +58,14 @@ namespace Utility.GameFlow
                 await Task.Yield();
             }
 
-            await Task.Delay(1000);
+            _currentSceneIndex = targetSceneIndex;
 
             SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(targetSceneIndex));
-
-            _currentSceneIndex = targetSceneIndex;
             
             OnNextSceneLoaded?.Invoke();
         }
 
-        private async void UnloadScene(byte targetSceneIndex)
+        private async Task UnloadScene(byte targetSceneIndex)
         {
             if(targetSceneIndex == 0) return;
             

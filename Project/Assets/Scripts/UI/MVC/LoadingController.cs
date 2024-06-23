@@ -1,4 +1,5 @@
 using UI.MVC.Bases;
+using UnityEngine;
 using Utility.GameFlow;
 
 namespace UI.MVC
@@ -6,8 +7,11 @@ namespace UI.MVC
     [System.Serializable]
     public class LoadingController : BaseController
     {
-        public LoadingController(BaseView view) : base(view)
+        private Camera loadingCamera;
+
+        public LoadingController(BaseView view, Camera targetCamera) : base(view)
         {
+            loadingCamera = targetCamera;
         }
         
         public override void Initialize()
@@ -23,6 +27,7 @@ namespace UI.MVC
             base.Show();
 
             UIManager.ToggleCanvas(MyView.MainCanvasGroup, true);
+            loadingCamera.enabled = true;
         }
 
         public override void Hide()
@@ -30,6 +35,7 @@ namespace UI.MVC
             base.Hide();
             
             UIManager.ToggleCanvas(MyView.MainCanvasGroup, false);
+            loadingCamera.enabled = false;
         }
     }
 }

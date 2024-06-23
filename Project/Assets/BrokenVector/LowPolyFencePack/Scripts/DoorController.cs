@@ -3,22 +3,21 @@
 namespace BrokenVector.LowPolyFencePack
 {
     /// <summary>
+    /// door state: Open or Closed
+    /// </summary>
+    public enum DoorState
+    {
+        Open,
+        Closed
+    }
+
+    /// <summary>
     /// This class manages the door animations.
     /// It needs the legacy animation component.
     /// </summary>
     [RequireComponent(typeof(Animation))]
     public class DoorController : MonoBehaviour
     {
-
-        /// <summary>
-        /// door state: Open or Closed
-        /// </summary>
-        public enum DoorState
-        {
-            Open,
-            Closed
-        }
-
         /// <summary></summary>
         /// <returns>
         /// returns and sets the current door state
@@ -38,10 +37,6 @@ namespace BrokenVector.LowPolyFencePack
         /// returns wether the door is currently open or closed
         /// </returns>
         public bool IsDoorOpen { get { return CurrentState == DoorState.Open; } }
-        /// <returns>
-        /// returns wether the door is currently open or closed
-        /// </returns>
-        public bool IsDoorClosed { get { return CurrentState == DoorState.Closed; } }
 
         public DoorState InitialState = DoorState.Closed;
         public float AnimationSpeed = 1;
@@ -57,6 +52,7 @@ namespace BrokenVector.LowPolyFencePack
         void Awake()
         {
             animator = GetComponent<Animation>();
+
             if (animator == null)
             {
                 Debug.LogError("Every DoorController needs an Animator.");
@@ -87,7 +83,7 @@ namespace BrokenVector.LowPolyFencePack
         /// </summary>
         public void CloseDoor()
         {
-            if (IsDoorClosed)
+            if (!IsDoorOpen)
                 return;
 
             CurrentState = DoorState.Closed;

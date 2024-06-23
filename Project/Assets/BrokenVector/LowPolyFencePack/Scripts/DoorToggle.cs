@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using Utility.GameFlow;
 
 namespace BrokenVector.LowPolyFencePack
 {
@@ -16,6 +17,9 @@ namespace BrokenVector.LowPolyFencePack
             {
                 doorController.ToggleDoor();
                 col.SetActive(false);
+
+                Invoke("DelayedChangeScene", 1f);
+
                 Entering.Invoke();
             }
         }
@@ -27,6 +31,11 @@ namespace BrokenVector.LowPolyFencePack
                 doorController.ToggleDoor();
                 col.SetActive(true);
             }
+        }
+
+        private void DelayedChangeScene()
+        {
+            GameManager.OnMoveOn?.Invoke();
         }
     }
 }

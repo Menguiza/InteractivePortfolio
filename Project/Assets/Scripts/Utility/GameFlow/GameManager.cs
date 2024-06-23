@@ -20,7 +20,10 @@ namespace Utility.GameFlow
 
         public delegate void StateChange(GameStates newState);
         public static event StateChange OnStateChanged;
-        
+
+        [Header("Parameters")]
+        [SerializeField] private GameStates initialState;
+
         public GameStates CurrentState { get; private set; }
 
         private void Awake()
@@ -33,7 +36,7 @@ namespace Utility.GameFlow
 
         private void Start()
         {
-            ChangeState(GameStates.Menu);
+            ChangeState(initialState);
             
             AudioManager.PlayClip(AudioManager.GetClipData("Theme"));
         }

@@ -1,8 +1,10 @@
 using UnityEngine;
+using Utility.GameFlow;
 
 /// <summary>
 /// This class manages player resetting position when the playable area is exceeded.
 /// </summary>
+[RequireComponent (typeof(BoxCollider))]
 public class PlayerResetPos : MonoBehaviour
 {
     //Assignable parameters
@@ -13,7 +15,16 @@ public class PlayerResetPos : MonoBehaviour
     //Utility parameters
     private Vector3 originalPosition;
     private Quaternion originalRotation;
-    
+
+    private BoxCollider transitableArea;
+
+    private void Awake()
+    {
+        transitableArea = GetComponent<BoxCollider>();
+
+        GameManager.Pause += ToggleTransitableArea;
+    }
+
     void Start()
     {
         //Setting original position
@@ -32,6 +43,8 @@ public class PlayerResetPos : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            print("Exit");
+
             player.GetComponent<WheelController>().DisableMovement();
             panelAnim.SetTrigger("EaseOut");
             Invoke("EaseIn", easeOut.length);
@@ -49,5 +62,10 @@ public class PlayerResetPos : MonoBehaviour
         player.rotation = originalRotation;
         player.GetComponent<WheelController>().EnableMovement();
         panelAnim.SetTrigger("EaseIn");
+    }
+
+    private void ToggleTransitableArea(bool isInactive)
+    {
+        transitableArea.enabled = !isInactive;
     }
 }
