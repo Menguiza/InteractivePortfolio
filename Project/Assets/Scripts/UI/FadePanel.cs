@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace UI
@@ -20,16 +21,31 @@ namespace UI
         
         //Utility parameters
         private Animator anim;
-    
-        void Start()
+
+        private void Awake()
         {
             //Animator reference (before class context the Animator component was required)
             anim = GetComponent<Animator>();
         }
 
-        private void TriggerFade()
+        void Start()
         {
+            TriggerFade(fadeType);
+        }
+
+        public void TriggerFade(FadeType fadeType)
+        {
+            ResetAllTriggers();
+
             anim.SetTrigger(fadeType.ToString());
+        }
+
+        private void ResetAllTriggers()
+        {
+            foreach (var name in Enum.GetNames(typeof(FadeType)))
+            {
+                anim.ResetTrigger(name);
+            }
         }
     }
 }

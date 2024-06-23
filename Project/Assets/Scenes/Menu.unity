@@ -220,24 +220,16 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!1001 &49670449
+--- !u!1001 &39005414
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 268351653}
     m_Modifications:
-    - target: {fileID: 2726835187358255654, guid: 583ed7d9dd46edd43b42caa6d3739cb2, type: 3}
-      propertyPath: targetSceneIndex
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 2726835187358255657, guid: 583ed7d9dd46edd43b42caa6d3739cb2, type: 3}
       propertyPath: m_Name
       value: Fade_Panel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2726835187358255657, guid: 583ed7d9dd46edd43b42caa6d3739cb2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2726835187358255658, guid: 583ed7d9dd46edd43b42caa6d3739cb2, type: 3}
       propertyPath: m_Pivot.x
@@ -325,10 +317,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 583ed7d9dd46edd43b42caa6d3739cb2, type: 3}
---- !u!224 &49670450 stripped
+--- !u!224 &39005415 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2726835187358255658, guid: 583ed7d9dd46edd43b42caa6d3739cb2, type: 3}
-  m_PrefabInstance: {fileID: 49670449}
+  m_PrefabInstance: {fileID: 39005414}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &268351649
 GameObject:
@@ -426,7 +418,7 @@ RectTransform:
   - {fileID: 344458663}
   - {fileID: 1086179982}
   - {fileID: 965914677}
-  - {fileID: 49670450}
+  - {fileID: 39005415}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

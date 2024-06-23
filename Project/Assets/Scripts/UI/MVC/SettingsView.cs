@@ -31,7 +31,7 @@ namespace UI.MVC
         [SerializeField] private Animator panelAnimator;
 
         public Button CloseWindowButton => closeWindowButton;
-        public Button CloseGameButton => closeWindowButton;
+        public Button CloseGameButton => closeGameButton;
         
         public Slider MasterVolumeSlider => masterVolumeSlider;
         public Slider MusicVolumeSlider => musicVolumeSlider;

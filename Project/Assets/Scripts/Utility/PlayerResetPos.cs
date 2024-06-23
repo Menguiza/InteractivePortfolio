@@ -1,3 +1,4 @@
+using UI;
 using UnityEngine;
 using Utility.GameFlow;
 
@@ -8,8 +9,11 @@ using Utility.GameFlow;
 public class PlayerResetPos : MonoBehaviour
 {
     //Assignable parameters
+    [Header("Player Related")]
     [SerializeField] private Transform player;
-    [SerializeField] private Animator panelAnim;
+
+    [Header("Feedback Related")]
+    [SerializeField] private FadePanel fadePanel;
     [SerializeField] private AnimationClip easeOut;
 
     //Utility parameters
@@ -43,10 +47,10 @@ public class PlayerResetPos : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            print("Exit");
-
             player.GetComponent<WheelController>().DisableMovement();
-            panelAnim.SetTrigger("EaseOut");
+
+            fadePanel?.TriggerFade(FadeType.EaseOut);
+
             Invoke("EaseIn", easeOut.length);
         }
     }
@@ -60,8 +64,10 @@ public class PlayerResetPos : MonoBehaviour
     {
         player.position = originalPosition;
         player.rotation = originalRotation;
+
         player.GetComponent<WheelController>().EnableMovement();
-        panelAnim.SetTrigger("EaseIn");
+
+        fadePanel?.TriggerFade(FadeType.EaseIn);
     }
 
     private void ToggleTransitableArea(bool isInactive)
