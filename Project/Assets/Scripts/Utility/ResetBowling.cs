@@ -72,7 +72,7 @@ public class ResetBowling : MonoBehaviour
     /// <param name="rb"> Used as reference to apply certain conditions. </param>
     private void StopRigidbody(Rigidbody rb)
     {
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         rb.isKinematic = true;
         rb.isKinematic = false;
     }

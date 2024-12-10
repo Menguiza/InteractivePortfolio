@@ -163,7 +163,7 @@ public class WheelController : MonoBehaviour
         {
             currentBrakeforce = brakingForce;
 
-            if ((rb.velocity.x > velocityForBreakSound || rb.velocity.x < -velocityForBreakSound) && !breakAlreadyCalled)
+            if ((rb.linearVelocity.x > velocityForBreakSound || rb.linearVelocity.x < -velocityForBreakSound) && !breakAlreadyCalled)
             {
                 breakAlreadyCalled = true;
                 canBrakeSound = true;
